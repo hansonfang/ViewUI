@@ -269,12 +269,21 @@
                 <DatePicker type="daterange" :options="options2" placement="bottom-end" placeholder="Select date" style="width: 200px"></DatePicker>
             </Col>
         </Row>
+        <DatePickers type="quarter" v-model="quarter" @on-change="handleChange" :optionItems="optionItems" split-panels placement="bottom-end" placeholder="Select Quarter" style="width: 200px"></DatePickers>
+        <DatePickers type="month"  @on-change="handleChange" placement="bottom-end" placeholder="Select Quarter" style="width: 200px"></DatePickers>
+
     </div>
 </template>
 <script>
+    import DatePickers from "../../src/components/date-pickers"
     export default {
+        components: {
+            DatePickers
+        },
         data () {
             return {
+                quarter: "",
+                optionItems: ["Q1", "Q2", "Q3", "Q4"],
                 options1: {
                     shortcuts: [
                         {
@@ -341,6 +350,14 @@
                         }
                     ]
                 }
+            }
+        },
+        methods: {
+            handleChange(v){
+                // console.log(v);
+            },
+            handleClick(){
+                this.quarter = ""
             }
         }
     }
