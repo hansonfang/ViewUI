@@ -6,10 +6,9 @@
 
 <h1>
 ViewUI
-    <h3>A high quality UI Toolkit built on Vue.js.</h3>
+    <h3>适配时间选择组件的季度选择</h3>
 </h1>
 
-> 该项目即为原先的 iView。iView 作者将在此仓库继续开发 iView 4.0 和后续版本，以及维护工作。新的组件库命名为 ViewUI，原仓库 iView 作者不再提交内容。
 > 
 > This project is the original iView. The iView author will continue to develop iView 4.0 and subsequent releases, as well as maintenance work, in this repository. The new component library is named ViewUI, and the iView author will no longer continue to submit content in the original repository.
 
