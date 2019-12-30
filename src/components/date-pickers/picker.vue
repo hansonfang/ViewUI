@@ -1,5 +1,6 @@
 <template>
-    <div :class="[prefixCls]" v-clickoutside="handleClose">
+    <div :class="[prefixCls]" v-clickoutside="handleClose" 
+    >
         <div ref="reference" :class="[prefixCls + '-rel']">
             <slot>
                 <i-input
@@ -280,13 +281,18 @@
             handleTransferClick () {
                 if (this.transfer) this.disableCloseUnderTransfer = true;
             },
-            handleClose () {
+            handleClose (e) {
                 if (this.disableCloseUnderTransfer) {
                     this.disableCloseUnderTransfer = false;
                     return false;
                 }
+                console.log(this.visible);
+                if(e && e.type === 'click' && this.visible){
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return; 
+                }
                 if (this.open !== null) return;
-
                 this.visible = false;
                 this.disableClickOutSide = false;
             },
@@ -295,13 +301,11 @@
                 this.visible = true;
                 this.$refs.pickerPanel.onToggleVisibility(true);
             },
-            handleBlur () {
-                this.visible = false;
+            handleBlur (e) {
                 this.onSelectionModeChange(this.type);
                 this.internalValue = this.internalValue.slice(); // trigger panel watchers to reset views
                 this.reset();
                 this.$refs.pickerPanel.onToggleVisibility(false);
-
             },
             reset(){
                 this.$refs.pickerPanel.reset && this.$refs.pickerPanel.reset();
@@ -361,45 +365,6 @@
                     this.dispatch('FormItem', 'on-form-change', this.publicStringValue);
                 });
             },
-            // parseDate(val) {
-            //     const isRange = this.type.includes('range');
-            //     const type = this.type;
-            //     const parser = (
-            //         TYPE_VALUE_RESOLVER_MAP[type] ||
-            //         TYPE_VALUE_RESOLVER_MAP['default']
-            //     ).parser;
-            //     const format = this.format || DEFAULT_FORMATS[type];
-            //     const multipleParser = TYPE_VALUE_RESOLVER_MAP['multiple'].parser;
-            //
-            //     if (val && type === 'time' && !(val instanceof Date)) {
-            //         val = parser(val, format);
-            //     } else if (this.multiple && val) {
-            //         val = multipleParser(val, format);
-            //     } else if (isRange) {
-            //         if (!val){
-            //             val = [null, null];
-            //         } else {
-            //             if (typeof val === 'string') {
-            //                 val = parser(val, format);
-            //             } else if (type === 'timerange') {
-            //                 val = parser(val, format).map(v => v || '');
-            //             } else {
-            //                 const [start, end] = val;
-            //                 if (start instanceof Date && end instanceof Date){
-            //                     val = val.map(date => new Date(date));
-            //                 } else if (typeof start === 'string' && typeof end === 'string'){
-            //                     val = parser(val.join(RANGE_SEPARATOR), format);
-            //                 } else if (!start || !end){
-            //                     val = [null, null];
-            //                 }
-            //             }
-            //         }
-            //     } else if (typeof val === 'string' && type.indexOf('time') !== 0){
-            //         val = parser(val, format) || null;
-            //     }
-            //
-            //     return (isRange || this.multiple) ? (val || []) : [val];
-            // },
             parseDate(val) {
               const isRange = this.type.includes('range');
               const type = this.type;

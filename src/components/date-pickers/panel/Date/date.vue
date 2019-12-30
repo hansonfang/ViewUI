@@ -123,9 +123,8 @@
                 ];
             },
             panelPickerHandlers(){
-                return this.handlePick;
-
-                // return this.pickerTable === `${this.currentView}-table` ? this.handlePick : this.handlePreSelection;
+                // return this.handlePick;
+                return this.pickerTable === `${this.currentView}-table` ? this.handlePick : this.handlePreSelection;
             },
             datePanelLabel () {
                 const locale = this.t('i.locale');
@@ -187,16 +186,21 @@
             },
             handlePreSelection(value){
                 this.panelDate = value;
-                if (this.pickerTable === 'year-table') this.pickerTable = 'month-table';
-                else this.pickerTable = this.getTableType(this.currentView);
+                if(this.pickerTable === 'year-table' && this.currentView === 'quarter'){
+                    this.pickerTable = 'quarter-table';
+                }else if (this.pickerTable === 'year-table') {
+                    this.pickerTable = 'month-table';
+                }else {
+                    this.pickerTable = this.getTableType(this.currentView);
+                }
             },
-            handlePick (value) {
+            handlePick (value, type) {
                 const {selectionMode, panelDate} = this;
                 if (selectionMode === 'year') value = new Date(value.getFullYear(), 0, 1);
                 else if (selectionMode === 'month') value = new Date(panelDate.getFullYear(), value.getMonth(), 1);
                 else value = new Date(value);
                 this.dates = [value];
-                this.$emit('on-pick', value);
+                this.$emit('on-pick', value, false, type || selectionMode);
             },
         },
     };
